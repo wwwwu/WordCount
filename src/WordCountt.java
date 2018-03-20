@@ -3,7 +3,7 @@ import java.util.*;
 
 public class WordCountt {
 	public static int words = 0;
-	public static int lines = 1;
+	public static int lines = 0;
 	public static int chars = 0;
 	public static int whiteL = 0;
 	public static int commentL = 0;
@@ -148,6 +148,12 @@ public class WordCountt {
 				String res = readFile(fc, fw, fl, fa, fileP.get(i), stopL);
 				if(fo == 1){
 				writeFile(res, outPath, true);
+				words = 0;
+				lines = 0;
+				chars = 0;
+				whiteL = 0;
+				commentL = 0;
+				codeL = 0;
 				}
 				
 			}
@@ -211,13 +217,14 @@ public class WordCountt {
 
 			}
 			//统计注释行和空行、代码行
+			BufferedReader br2 =  new BufferedReader(new FileReader(file));
 			String line = "";   
 			boolean comment = false;
             try {   
-                while ((line = br.readLine()) != null) {  
+                while ((line = br2.readLine()) != null) {  
                 	
                     line = line.trim();   
-                    if (line.matches("^[\\s&&[^\\n]]*$")) {   
+                    if (line.matches("^[//{//}\\s&&[^\\n]]*$")) {   
                         whiteL++;   
                     } else if (line.startsWith("/*") && !line.endsWith("*/")) {   
                         commentL++;   
@@ -235,7 +242,7 @@ public class WordCountt {
                 }   
             } catch (IOException e) {   
                     e.printStackTrace();   
-            }   
+            }
             //根据输入将统计结果写入文件
 			StringBuffer t = new StringBuffer();
 			if(fc == 1){
